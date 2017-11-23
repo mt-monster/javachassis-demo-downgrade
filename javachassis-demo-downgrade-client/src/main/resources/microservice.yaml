@@ -1,0 +1,30 @@
+APPLICATION_ID: demodowngrade
+service_description:
+  name: downgradeclient
+  version: 0.0.1
+cse:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+  rest:
+    address: 0.0.0.0:18081
+  handler:
+    chain:
+      Consumer:
+        default: bizkeeper-consumer,loadbalance
+  isolation:
+#    Consumer:
+#      enabled: true
+    Consumer:
+      timeout:
+        enabled: true
+      timeoutInMilliseconds: 1000
+  circuitBreaker:
+    enabled: true
+    sleepWindowInMilliseconds: 15000
+    requestVolumeThreshold: 3
+    errorThresholdPercentage: 50
+  fallback:
+    enabled: true
+  fallbackpolicy:
+    policy: returnnull
