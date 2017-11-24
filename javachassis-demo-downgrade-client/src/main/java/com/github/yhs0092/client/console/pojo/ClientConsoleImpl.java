@@ -24,10 +24,19 @@ public class ClientConsoleImpl implements ClientConsole {
 
   @RequestMapping(path = "/startRequest", method = RequestMethod.POST)
   public String startRequest(@RequestParam(name = "name") String name, @RequestParam(name = "times") int times) {
+    LOGGER.info("start loop, name = [{}]", name);
     for (int i = 0; i < times; ++i) {
-      String result = hello.sayHello(name);
+      LOGGER.info("invoke#[{}], name = [{}]", i, name);
+      String result = null;
+      try {
+        result = hello.sayHello(name);
+      } catch (Exception e) {
+        LOGGER.error("catch an exception while invoking server...");
+        e.printStackTrace();
+      }
       LOGGER.info("invoke#[{}], name = [{}], result = [{}]", i, name, result);
     }
+    LOGGER.info("done, name = [{}]", name);
     return "done";
   }
 }
